@@ -476,22 +476,40 @@ for H(z) in
 	&          &   &   &   &   & \frac{5z^{-2}}{4} & + & \frac{5z^{-3}}{8} &   &  &   &        \\
 	\cline{7-11}
 	&          &   &   &   &   &      &   & \frac{-5z^{-3}}{8} &   &  &   &        \\
-	&          &   &   &   &   &      &   & \frac{-5z^{-3}}{8} & - & \frac{5z^{-4}}{16} & - & 3x^5   \\
+	&          &   &   &   &   &      &   & \frac{-5z^{-3}}{8} & - & \frac{5z^{-4}}{16} &  &    \\
 	\cline{9-13}
-	&          &   &   &   &   &      &   &      &   & 5x^4 & + & 3x^5   \\
+	&          &   &   &   &   &      &   &      &   &\frac{5z^{-4}}{16}& + & \frac{5z^{-5}}{32}   \\
 	&          &   &   &   &   &      &   &      &   &      &   & \vdots \\
 \end{array}
 \]
-\begin{multline}
-	H(z) = \frac{1 + z^{-2}}{1 + \frac{1}{2}z^{-1}}\\
-	=1-\frac{z^{-1}}{2}+\frac{5z^{-2}}{4}-\frac{5z^{-3}}{8}+\frac{5z^{-4}}{16}\\+\frac{\frac{5z^{-3}}{16}}{1+\frac{z^{-1}}{2}}\\
-\end{multline}
+%
+%\begin{multline}
+%	H(z) = \frac{1 + z^{-2}}{1 + \frac{1}{2}z^{-1}}\\
+%	%=1-\frac{z^{-1}}{2}+\frac{5z^{-2}}{4}-\frac{5z^{-3}}{8}+\frac{5z^{-4}}{16}\\+\frac{\frac{5z^{-5}}{%32}}{1+\frac{z^{-1}}{2}}\\
+%\end{multline}
 \begin{multline}
 	\implies \sum_{n=-\infty}^{n=\infty}h(n)z^{-n}=1-\frac{z^{-1}}{2}+\frac{5z^{-2}}{4}-\frac{5z^{-3}}{8}\\+\frac{5z^{-4}}{16}+\frac{\frac{5z^{-3}}{16}}{1+\frac{z^{-1}}{2}}\\
 \end{multline}
+Comparing coefficients,
+
 \begin{align}
+		h(n) = \begin{cases}
+		%\doublespacing
+		0 \quad if \quad n < 0\\
+		1, \quad if \quad n = 0\\
+		-\frac{1}{2}, \quad if \quad n = 1\\
+		5\brak{-\tfrac{1}{2}}^{n}, \quad if \quad n \ge 2
+	\end{cases}\\	
 	\implies h(n)= 0 \;\; \forall \;\; n<0\\
-	h(0)=1,h(1)=-\frac{1}{2},h(2)=\frac{5}{4},h(3)=-\frac{5}{8},h(4)=
+	h(0)=1,h(1)=-\frac{1}{2},h(2)=\frac{5}{4},h(3)=-\frac{5}{8},\\h(4)=\frac{5}{16}
+\end{align}
+\begin{align}
+	H(z) = \frac{1 + z^{-2}}{1 + \frac{1}{2}z^{-1}}\\
+\end{align}
+ROC: 
+\begin{align}
+	\abs{\frac{z^{-1}}{2}}<1\\
+	\implies \abs{z}>\frac{1}{2}
 \end{align}
 \item \label{prob:impulse_resp}
 Find an expression for $h(n)$ using $H(z)$, given that 
@@ -510,7 +528,7 @@ system defined by \eqref{eq:iir_filter}.
 	\implies h(n) &= \brak{-\frac{1}{2}}^{n}u(n) + \brak{-\frac{1}{2}}^{n-2}u(n-2)
 \end{align}
 using \eqref{eq:anun} and \eqref{eq:z_trans_shift}.
-\item Sketch $h(n)$. Is it bounded? Convergent? 
+\item Sketch $h(n)$. Is it bounded?Justify theoretically. 
 \\
 \solution The following code plots Fig. \ref{fig:hn}.
 \begin{lstlisting}
@@ -522,8 +540,17 @@ using \eqref{eq:anun} and \eqref{eq:z_trans_shift}.
 	\caption{$h(n)$ as the inverse of $H(z)$}
 	\label{fig:hn}
 \end{figure}
-As we can see from the graph, h(n) is bounded in [-0.625,1.25] and it converges to 0 because $\brak{\frac{-1}{2}}^n$ and $\brak{\frac{-1}{2}}^{n-2}$ both converge to 0 as n approaches $\infty$\\
+As we can see from the graph, h(n) is bounded in [-0.625,1.25] 
 %
+\item Convergent? Justify using ratio test
+\solution{
+%The system converges to 0 because $\brak{\frac{-1}{2}}^n$ and %$\brak{\frac{-1}{2}}^{n-2}$ both converge to 0 as n approaches $\infty$\\
+%ratio test?????
+\begin{align}
+Lim_{n\to\infty}\abs{\frac{h(n+1)}{h(n)}}&=\abs{\frac{\brak{\frac{-1}{2}}^{n+1}+\brak{\frac{-1}{2}}^{n-1}}{\brak{\frac{-1}{2}}^{n}+\brak{\frac{-1}{2}}^{n-2}}}\\
+&=\frac{1}{2}
+\end{align}Using ratio test,the system is convergent
+
 \item The system with $h(n)$ is defined to be stable if
 \begin{equation}
 	\sum_{n=-\infty}^{\infty}h(n) < \infty
@@ -532,14 +559,16 @@ Is the system defined by \eqref{eq:iir_filter} stable for the impulse response i
 %
 \solution 
 \begin{align}
-	\sum_{n=-\infty}^{\infty}h(n)&=\sum_{n=0}^{\infty}\brak{\frac{-1}{2}}^n+\sum_{n=2}^{\infty}\brak{\frac{-1}{2}}^{n}\\
+	\sum_{n=-\infty}^{\infty}h(n)&=\sum_{n=0}^{\infty}\brak{\frac{-1}{2}}^n+\sum_{n=2}^{\infty}\brak{\frac{-1}{2}}^{n-2}\\
 %	&=\frac{1}{\frac{3}{2}}+\frac{\frac{1}{4}}{\frac{3}{2}}\\
-	&=\frac{5}{6}<\infty
+	&=\frac{2}{3}+\frac{2}{3}\\
+	&=\frac{4}{3}<\infty
 \end{align}
 Hence the system is stable.
 
 
 %
+\item Verify the above result with a python code
 \item 
 Compute and sketch $h(n)$ using 
 \begin{equation}
@@ -562,11 +591,13 @@ This is the definition of $h(n)$.
 	\label{fig:hndef}
 \end{figure}
 %
+
+
 \item Compute 
 %
 \begin{equation}
 	\label{eq:convolution}
-	y(n) = x(n)*h(n) = \sum_{k=-\infty}^{\infty}x(k)h(n-k)
+	y(n) = x(n)*h(n) = \sum_{n=-\infty}^{\infty}x(k)h(n-k)
 \end{equation}
 %
 Comment. The operation in \eqref{eq:convolution} is known as
@@ -586,6 +617,73 @@ $y(n)$ in  Fig.
 	\caption{$y(n)$ from the definition of convolution}
 	\label{fig:ynconv}
 \end{figure}
+\item Express the above convolution using a Teoplitz matrix.
+\solution Since
+$x(n) = \cbrak{1,2,3,4,2,1}$\\
+From \eqref{eq:convolution}	$y(n) = x(n)*h(n)$\\
+%			n = 0, $\ldots$ 6\\
+\begin{equation}
+	\scriptsize 
+	\left(
+	\begin{smallmatrix}
+		x(1) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+		x(2) & x(1) & 0 &0 & 0 & 0 & 0 & 0 &  0 & 0 & 0 & 0\\
+		x(3) & x(2) & x(1) & 0 & 0 & 0 & 0 &  0 & 0 & 0 & 0 & 0\\
+		x(4) & x(3) & x(2) & x(1) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+		x(5) & x(4) & x(3) & x(2)&x(1) & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+		x(6) & x(5) & x(4) & x(3)&x(2)&x(1)&0&0&0&0&0&0\\
+		0 & x(6) & x(5) & x(4)&x(3)&x(2)&x(1)&0&0&0&0&0\\
+		0 & 0 & x(6) & x(5)& x(4)&x(3)&x(2)&x(1)&0&0&0&0\\
+		0 & 0 & 0 & x(6) & x(5)&x(4)&x(3)&x(2)&x(1)&0&0&0\\
+		0 & 0 & 0 & 0 & x(6) & x(5)&x(4)&x(3)&x(2)&x(1)&0&0\\
+		0 & 0 & 0 & 0 & 0 & x(6)&x(5)&x(4)&x(3)&x(2)&x(1)&0\\
+		0 & 0 & 0 & 0 & 0 & 0 &x(6)&x(5)&x(4)&x(3)&x(2)&x(1)\\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & x(6)&x(5)&x(4)&x(3)&x(2)\\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 &x(6)&x(5)&x(4)&x(3)\\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 &x(6)&x(5)&x(4)\\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 &x(6)&x(5)\\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 &x(6)\\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+	\end{smallmatrix}
+	\right)
+	\left(
+	\begin{smallmatrix}
+		h(1)\\h(2)\\h(3)\\h(4)\\h(5)\\h(6)\\h(7)\\h(8)\\h(9)\\h(10)\\h(11)\\h(12)
+	\end{smallmatrix}
+	\right)	
+	\normalsize
+\end{equation}	
+\begin{align}
+	\left(	\begin{smallmatrix}
+		1&0&0&0&0&0&0&0&0&0&0&0\\
+		2&1&0&0&0&0&0&0&0&0&0&0\\
+		3&2&1&0&0&0&0&0&0&0&0&0\\
+		4&3&2&1&0&0&0&0&0&0&0&0\\
+		2&4&3&2&1&0&0&0&0&0&0&0\\
+		1&2&4&3&2&1&0&0&0&0&0&0\\
+		0&1&2&4&3&2&1&0&0&0&0&0\\
+		0&0&1&2&4&3&2&1&0&0&0&0\\
+		0&0&0&1&2&4&3&2&1&0&0&0\\
+		0&0&0&0&1&2&4&3&2&1&0&0\\
+		0&0&0&0&0&1&2&4&3&2&1&0\\
+		0&0&0&0&0&0&1&2&4&3&2&1\\
+		0&0&0&0&0&0&0&1&2&4&3&2\\
+		0&0&0&0&0&0&0&0&1&2&4&3\\
+		0&0&0&0&0&0&0&0&0&1&2&4\\
+		0&0&0&0&0&0&0&0&0&0&1&2\\
+		0&0&0&0&0&0&0&0&0&0&0&1\\
+		0&0&0&0&0&0&0&0&0&0&0&0\\
+	\end{smallmatrix} \right)
+	\left(\begin{smallmatrix}1.   \\      -0.5    \\     1.25   \\    -0.625   \\    0.3125  \\   -0.15625 \\ 0.078125  \\  -0.0390625 \\  0.01953125 \\ -0.00976562 \\ 0.00390625 \\ -0.00195312
+	\end{smallmatrix} \right)\\
+	= \left(\begin{smallmatrix}
+		1 \\ 1.5 \\ 3.25\\ 4.375\\
+		2.8125 \\ 3.59375 \\ 0.203125 \\ 0.8984375\\
+		-0.44921875 \\ 0.224609375 \\-0.112304688 \\ 0.0561523438\\
+		-0.0280761719 \\ 0.0140380859 \\-7.01904297  \times 10^{-3} \\ 3.50952148 \times 10^{-3}\\
+		-1.75476074 \times 10^{-3} \\ 8.77380371  \times 10^{-4} \\-4.38690186 \times 10^{-4} \\\\ 0 \\\\
+	\end{smallmatrix}\right)
+\end{align}		
 \item Show that
 \begin{equation}
 	y(n) =  \sum_{k=-\infty}^{\infty}x(n-k)h(k)
